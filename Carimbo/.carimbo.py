@@ -11,6 +11,7 @@ def login():
     # All the stuff inside your window.
     layout = [  [sg.Text('Pasta do Arquivo'),sg.InputText()],
                 [sg.Text('Pasta de Destino'), sg.InputText()],
+                [sg.Text('Versão'), sg.InputText()],
                 [sg.Button('Ok'), sg.Button('Cancel')] ]
     return sg.Window('login',layout, finalize = True)
 
@@ -22,6 +23,13 @@ while True:
     elif janela == window and event =="Ok":
         matricial = values[0]
         destination = values[1]
+        if len(values[2]) >= 2:
+            if values[2][0] =="0":
+                versao = values[2][1]
+            else:
+                versao = values[2]
+        else:
+            versao = values[2]
         break
 
 os.chdir(matricial)
@@ -30,11 +38,11 @@ documentos = os.listdir()
 
 for documento in documentos:
     #mudar de diretorio
-    if '.dwg' not in documento and '.bak' not in documento and '.pdf' not in documento:
+    if os.path.isdir(documento):
         os.chdir(documento)
         local = os.getcwd()
         for arquivo in os.listdir():
-            if "0.pdf" in arquivo :
+            if (versao+".pdf") in arquivo or (versao+"A.pdf") in arquivo:
                 try:
                     shutil.copyfile(src = os.path.join(local,arquivo), dst = os.path.join(destination,arquivo))
                     print(f"arquivo{arquivo} copiado com sucesso")
@@ -42,15 +50,4 @@ for documento in documentos:
                 except:
                     print(f"tivemos erro no arquivo {arquivo}")
         os.chdir(matricial)
-
-
-
-
-
-
-
-
-
-
-
 
