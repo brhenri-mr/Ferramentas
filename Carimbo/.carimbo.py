@@ -54,7 +54,7 @@ while True:
                     os.chdir(matricial)
         except:
             print("insira parametros")
-            widown.close()
+            window.close()
 
 
 
